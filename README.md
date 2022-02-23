@@ -1,6 +1,6 @@
 # viztree
 
-[![](https://img.shields.io/github/license/sky-joker/viztree?style=for-the-badge)](https://github.com/sky-joker/viztree/blob/main/LICENSE.txt)
+[![](https://img.shields.io/github/license/sky-joker/viztree?style=for-the-badge)](https://github.com/sky-joker/viztree/blob/main/LICENSE)
 
 Viztree can generate a html for visualizing the directory tree.  
 The directory tree is visualized with [Fancytree](https://github.com/mar10/fancytree).
