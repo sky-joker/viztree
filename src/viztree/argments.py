@@ -16,7 +16,7 @@ def create_base_parser():
 
     parser.add_argument('--skin',
                         type=str, default='xp',
-                        choices=['xp', 'vista', 'win7', 'win8', 'win8n', 'win8xll', 'lion'],
+                        choices=['xp', 'vista', 'win7', 'win8', 'win8-n', 'win8-xxl', 'lion'],
                         help='selecte skin that applies to the visualization')
 
     return parser.parse_args()
