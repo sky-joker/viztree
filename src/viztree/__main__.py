@@ -5,6 +5,15 @@ import os
 
 
 def make_dir_info(dir_name: str) -> dict:
+    """
+    Make directory object to parse by fancytree.
+
+    Args:
+        dir_name (str): The directory name.
+
+    Returns:
+        dict: The made directory object.
+    """
     dir_info = {
         "title": dir_name,
         "expanded": True,
@@ -16,6 +25,15 @@ def make_dir_info(dir_name: str) -> dict:
 
 
 def make_file_info(files: list) -> list:
+    """
+    Make file object to parse by fancytree.
+
+    Args:
+        files (list): The files that the directory has.
+
+    Returns:
+        list: The made file object.
+    """
     file_info_array = []
     for file_name in files:
         file_info_array.append({
@@ -27,6 +45,15 @@ def make_file_info(files: list) -> list:
 
 
 def merge_directory_path(path_dict: dict) -> list:
+    """
+    Merge the directory path to make the the hierarchization of the directory path.
+
+    Args:
+        path_dict (dict): The path_dict has the directory information for level 1 or less in the flat state.
+
+    Returns:
+        list: The merged directory path.
+    """
     _value = None
     for key, value in sorted(path_dict.items(), reverse=True):
         if _value is None:
@@ -39,6 +66,15 @@ def merge_directory_path(path_dict: dict) -> list:
 
 
 def make_tree(startpath: str) -> dict:
+    """
+    Make a directory tree based on the specified directory path.
+
+    Args:
+        startpath (str): The path to start for getting recursively the directory path.
+
+    Returns:
+        dict: The parsed directory tree object.
+    """
     top_dir_info = {}
     path_dict = {}
     parsed_dict_info_array = []
@@ -59,7 +95,7 @@ def make_tree(startpath: str) -> dict:
                 if path_dict[level]:
                     parsed_dict_info_array.append(merge_directory_path(path_dict))
 
-                # reset the variables to set new directory informations for level 1 or less
+                # reset the variables to set new directory information for level 1 or less
                 path_dict = {}
                 path_dict[level] = []
 
