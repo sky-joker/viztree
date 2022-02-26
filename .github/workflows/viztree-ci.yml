@@ -55,3 +55,38 @@ jobs:
 
       - name: Run unit test
         run: tox -e `echo py${{ matrix.python }} | sed 's/\.//g'`-unit
+
+  packaging:
+    runs-on: ubuntu-latest
+    name: Unit(py${{ matrix.python }})
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r test-requirements.txt
+
+      - name: Run packaging test
+        run: tox -e packaging
+
+  install:
+    runs-on: ubuntu-latest
+    name: Unit(py${{ matrix.python }})
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Run install test
+        run: tox -e install
