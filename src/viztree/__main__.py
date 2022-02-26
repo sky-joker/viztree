@@ -1,10 +1,11 @@
 from jinja2 import Template
+from typing import Dict, List, Any
 from viztree.argments import create_base_parser
 import json
 import os
 
 
-def make_dir_info(dir_name: str) -> dict:
+def make_dir_info(dir_name: str) -> Dict[str, Any]:
     """
     Make directory object to parse by fancytree.
 
@@ -24,7 +25,7 @@ def make_dir_info(dir_name: str) -> dict:
     return dir_info
 
 
-def make_file_info(files: list) -> list:
+def make_file_info(files: List[Any]) -> list:
     """
     Make file object to parse by fancytree.
 
@@ -34,7 +35,7 @@ def make_file_info(files: list) -> list:
     Returns:
         list: The made file object.
     """
-    file_info_array = []
+    file_info_array: List[Dict[str, Any]] = []
     for file_name in files:
         file_info_array.append({
             "title": file_name,
@@ -44,7 +45,7 @@ def make_file_info(files: list) -> list:
     return file_info_array
 
 
-def merge_directory_path(path_dict: dict) -> list:
+def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
     """
     Merge the directory path to make the the hierarchization of the directory path.
 
@@ -65,7 +66,7 @@ def merge_directory_path(path_dict: dict) -> list:
     return path_dict[key][0]
 
 
-def make_tree(startpath: str) -> dict:
+def make_tree(startpath: str) -> Dict[str, Any]:
     """
     Make a directory tree based on the specified directory path.
 
@@ -75,9 +76,9 @@ def make_tree(startpath: str) -> dict:
     Returns:
         dict: The parsed directory tree object.
     """
-    top_dir_info = {}
-    path_dict = {}
-    parsed_dict_info_array = []
+    top_dir_info: Dict[str, Any] = {}
+    path_dict: Dict[int, Any] = {}
+    parsed_dict_info_array: List[Any] = []
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
 
