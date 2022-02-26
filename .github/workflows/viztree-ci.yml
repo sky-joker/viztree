@@ -1,4 +1,4 @@
-name: ziptree-ci
+name: viztree-ci
 on:
   push:
   pull_request:
