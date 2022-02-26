@@ -53,5 +53,5 @@ jobs:
       - name: Install dependencies
         run: pip install -r test-requirements.txt
 
-      - name: Run syntax test
+      - name: Run unit test
         run: tox -e `echo py${{ matrix.python }} | sed 's/\.//g'`-unit
