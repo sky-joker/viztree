@@ -25,7 +25,7 @@ def make_dir_info(dir_name: str) -> Dict[str, Any]:
     return dir_info
 
 
-def make_file_info(files: List[Any]) -> list:
+def make_file_info(files: List[Any]) -> List[Any]:
     """
     Make file object to parse by fancytree.
 
