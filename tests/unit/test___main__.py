@@ -31,6 +31,9 @@ def test_file_info(test_files):
                 title="test1",
                 expanded=True,
                 folder=True,
+                sub_dirs=[
+                    "test2"
+                ],
                 children=[
                     dict(
                         title="file1.txt",
@@ -44,6 +47,9 @@ def test_file_info(test_files):
                 title="test2",
                 expanded=True,
                 folder=True,
+                sub_dirs=[
+                    "test3"
+                ],
                 children=[]
             )
         ],
@@ -52,6 +58,7 @@ def test_file_info(test_files):
                 title="test3",
                 expanded=True,
                 folder=True,
+                sub_dirs=[],
                 children=[]
             )
         ]
