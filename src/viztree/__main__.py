@@ -12,7 +12,7 @@ def make_dir_info(dir_name: str, sub_dirs: List[str] = [], parent_dir_path: str 
     Args:
         dir_name (str): The directory name.
         sub_dirs (list): Sub directories of dir_name.
-        parent_dir_path (str): Parent directory absolute path of the subdirectory.
+        parent_dir_path (str): Parent directory path of the subdirectory.
         current_path (str): Current path of the subdirectory.
 
     Returns:
