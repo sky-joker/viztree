@@ -58,7 +58,7 @@ def make_file_info(files: List[Any]) -> List[Any]:
 
 def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
     """
-    Merge the directory path to make the the hierarchization of the directory path.
+    Merge the directory path to make the hierarchization of the directory path.
 
     Args:
         path_dict (dict): The path_dict has the directory information for level 1 or less in the flat state.
@@ -67,7 +67,6 @@ def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
         list: The merged directory path.
     """
     _value = None
-    # print(json.dumps(path_dict, indent=2))
     for key, value in sorted(path_dict.items(), reverse=True):
         if _value is None:
             _value = value
