@@ -5,13 +5,14 @@ import json
 import os
 
 
-def make_dir_info(dir_name: str, sub_dirs: List[str] = []) -> Dict[str, Any]:
+def make_dir_info(dir_name: str, sub_dirs: List[str] = [], parent_dir_name: str = '') -> Dict[str, Any]:
     """
     Make directory object to parse by fancytree.
 
     Args:
         dir_name (str): The directory name.
         sub_dirs (list): Sub directories of dir_name.
+        parent_dir_name (str): Parent directory name of the sub directory.
 
     Returns:
         dict: The made directory object.
@@ -23,7 +24,10 @@ def make_dir_info(dir_name: str, sub_dirs: List[str] = []) -> Dict[str, Any]:
         "children": [],
     }
     if sub_dirs:
-        dir_info["sub_dirs"] = sub_dirs
+        dir_info['sub_dirs'] = sub_dirs
+
+    if parent_dir_name:
+        dir_info['parent_dir_name'] = parent_dir_name
 
     return dir_info
 
@@ -65,15 +69,24 @@ def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
         else:
             for dir_info in path_dict[key]:
                 for dir_one_level_below in _value:
-                    if 'sub_dirs' in dir_info and dir_one_level_below['title'] in dir_info['sub_dirs']:
+                    if 'sub_dirs' in dir_info and \
+                            dir_one_level_below['title'] in dir_info['sub_dirs'] and \
+                            dir_one_level_below['parent_dir_name'] == dir_info['title']:
                         dir_info['children'] += [dir_one_level_below]
+
+                        # delete unnecessary keys in visualizing the directory tree
                         if 'sub_dirs' in dir_one_level_below:
                             del dir_one_level_below['sub_dirs']
+                        if 'parent_dir_name' in dir_one_level_below:
+                            del dir_one_level_below['parent_dir_name']
 
                 if 'sub_dirs' in dir_info:
                     del dir_info['sub_dirs']
 
             _value = value
+
+    if 'parent_dir_name' in path_dict[key][0]:
+        del path_dict[key][0]['parent_dir_name']
 
     return path_dict[key][0]
 
@@ -88,12 +101,14 @@ def make_tree(startpath: str) -> Dict[str, Any]:
     Returns:
         dict: The parsed directory tree object.
     """
+    _level: int = 0
+    _dir_name: str = ''
+    parent_dir_name: str = ''
     top_dir_info: Dict[str, Any] = {}
     path_dict: Dict[int, Any] = {}
     parsed_dict_info_array: List[Any] = []
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
-
         dir_name = os.path.basename(root)
 
         if level == 0:
@@ -104,6 +119,9 @@ def make_tree(startpath: str) -> Dict[str, Any]:
             if level not in path_dict:
                 path_dict[level] = []
 
+            if '_level' in locals() and _level < level:
+                parent_dir_name = _dir_name
+
             if len(root.split('/')) == 2:
                 if path_dict[level]:
                     parsed_dict_info_array.append(merge_directory_path(path_dict))
@@ -112,9 +130,12 @@ def make_tree(startpath: str) -> Dict[str, Any]:
                 path_dict = {}
                 path_dict[level] = []
 
-            dir_info = make_dir_info(dir_name, dirs)
+            dir_info = make_dir_info(dir_name, dirs, parent_dir_name)
             dir_info['children'] += make_file_info(files)
             path_dict[level].append(dir_info)
+
+            _level = level
+            _dir_name = dir_name
 
     if path_dict:
         parsed_dict_info_array.append(merge_directory_path(path_dict))

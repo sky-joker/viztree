@@ -32,7 +32,8 @@ def test_file_info(test_files):
                 expanded=True,
                 folder=True,
                 sub_dirs=[
-                    "test2"
+                    "test2",
+                    "test3"
                 ],
                 children=[
                     dict(
@@ -48,19 +49,41 @@ def test_file_info(test_files):
                 expanded=True,
                 folder=True,
                 sub_dirs=[
-                    "test3"
+                    "test4"
                 ],
-                children=[]
-            )
-        ],
-        "3": [
+                children=[],
+                parent_dir_name="test1"
+            ),
             dict(
                 title="test3",
                 expanded=True,
                 folder=True,
-                sub_dirs=[],
-                children=[]
+                sub_dirs=[
+                    "test5"
+                ],
+                children=[],
+                parent_dir_name="test1"
             )
+
+        ],
+        "3": [
+            dict(
+                title="test4",
+                expanded=True,
+                folder=True,
+                sub_dirs=[],
+                children=[],
+                parent_dir_name="test2"
+            ),
+            dict(
+                title="test5",
+                expanded=True,
+                folder=True,
+                sub_dirs=[],
+                children=[],
+                parent_dir_name="test3"
+            )
+
         ]
     })
 ])
@@ -80,7 +103,20 @@ def test_merge_directory_path(test_path_dict):
                 folder=True,
                 children=[
                     dict(
-                        title="test3",
+                        title="test4",
+                        expanded=True,
+                        folder=True,
+                        children=[]
+                    )
+                ]
+            ),
+            dict(
+                title="test3",
+                expanded=True,
+                folder=True,
+                children=[
+                    dict(
+                        title="test5",
                         expanded=True,
                         folder=True,
                         children=[]
