@@ -5,14 +5,15 @@ import json
 import os
 
 
-def make_dir_info(dir_name: str, sub_dirs: List[str] = [], parent_dir_name: str = '') -> Dict[str, Any]:
+def make_dir_info(dir_name: str, sub_dirs: List[str] = [], parent_dir_path: str = '', current_path: str = '') -> Dict[str, Any]:
     """
     Make directory object to parse by fancytree.
 
     Args:
         dir_name (str): The directory name.
         sub_dirs (list): Sub directories of dir_name.
-        parent_dir_name (str): Parent directory name of the sub directory.
+        parent_dir_path (str): Parent directory absolute path of the subdirectory.
+        current_path (str): Current path of the subdirectory.
 
     Returns:
         dict: The made directory object.
@@ -26,8 +27,11 @@ def make_dir_info(dir_name: str, sub_dirs: List[str] = [], parent_dir_name: str 
     if sub_dirs:
         dir_info['sub_dirs'] = sub_dirs
 
-    if parent_dir_name:
-        dir_info['parent_dir_name'] = parent_dir_name
+    if parent_dir_path:
+        dir_info['parent_dir_path'] = parent_dir_path
+
+    if current_path:
+        dir_info['current_path'] = current_path
 
     return dir_info
 
@@ -63,6 +67,7 @@ def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
         list: The merged directory path.
     """
     _value = None
+    # print(json.dumps(path_dict, indent=2))
     for key, value in sorted(path_dict.items(), reverse=True):
         if _value is None:
             _value = value
@@ -71,22 +76,31 @@ def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
                 for dir_one_level_below in _value:
                     if 'sub_dirs' in dir_info and \
                             dir_one_level_below['title'] in dir_info['sub_dirs'] and \
-                            dir_one_level_below['parent_dir_name'] == dir_info['title']:
+                            dir_one_level_below['parent_dir_path'] == dir_info['current_path']:
                         dir_info['children'] += [dir_one_level_below]
 
                         # delete unnecessary keys in visualizing the directory tree
                         if 'sub_dirs' in dir_one_level_below:
                             del dir_one_level_below['sub_dirs']
-                        if 'parent_dir_name' in dir_one_level_below:
-                            del dir_one_level_below['parent_dir_name']
+                        if 'current_path' in dir_one_level_below:
+                            del dir_one_level_below['current_path']
 
+                # delete unnecessary keys in visualizing the directory tree
                 if 'sub_dirs' in dir_info:
                     del dir_info['sub_dirs']
 
+            # delete unnecessary keys in visualizing the directory tree
+            for dir_one_level_belowi in _value:
+                if 'parent_dir_path' in dir_one_level_belowi:
+                    del dir_one_level_belowi['parent_dir_path']
+
             _value = value
 
-    if 'parent_dir_name' in path_dict[key][0]:
-        del path_dict[key][0]['parent_dir_name']
+    # delete unnecessary keys in visualizing the directory tree
+    if 'parent_dir_path' in path_dict[key][0]:
+        del path_dict[key][0]['parent_dir_path']
+    if 'current_path' in path_dict[key][0]:
+        del path_dict[key][0]['current_path']
 
     return path_dict[key][0]
 
@@ -101,9 +115,6 @@ def make_tree(startpath: str) -> Dict[str, Any]:
     Returns:
         dict: The parsed directory tree object.
     """
-    _level: int = 0
-    _dir_name: str = ''
-    parent_dir_name: str = ''
     top_dir_info: Dict[str, Any] = {}
     path_dict: Dict[int, Any] = {}
     parsed_dict_info_array: List[Any] = []
@@ -119,23 +130,20 @@ def make_tree(startpath: str) -> Dict[str, Any]:
             if level not in path_dict:
                 path_dict[level] = []
 
-            if '_level' in locals() and _level < level:
-                parent_dir_name = _dir_name
+            parent_dir_path = '/'.join((root.split('/')[:-1]))
 
             if len(root.split('/')) == 2:
                 if path_dict[level]:
                     parsed_dict_info_array.append(merge_directory_path(path_dict))
+                    parent_dir_path = ''
 
                 # reset the variables to set new directory information for level 1 or less
                 path_dict = {}
                 path_dict[level] = []
 
-            dir_info = make_dir_info(dir_name, dirs, parent_dir_name)
+            dir_info = make_dir_info(dir_name, dirs, parent_dir_path, root)
             dir_info['children'] += make_file_info(files)
             path_dict[level].append(dir_info)
-
-            _level = level
-            _dir_name = dir_name
 
     if path_dict:
         parsed_dict_info_array.append(merge_directory_path(path_dict))

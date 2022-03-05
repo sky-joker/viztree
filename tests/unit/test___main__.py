@@ -40,7 +40,8 @@ def test_file_info(test_files):
                         title="file1.txt",
                         file=True
                     )
-                ]
+                ],
+                current_path="./example"
             )
         ],
         "2": [
@@ -52,7 +53,8 @@ def test_file_info(test_files):
                     "test4"
                 ],
                 children=[],
-                parent_dir_name="test1"
+                parent_dir_path="./example",
+                current_path="./example/test2"
             ),
             dict(
                 title="test3",
@@ -62,7 +64,8 @@ def test_file_info(test_files):
                     "test5"
                 ],
                 children=[],
-                parent_dir_name="test1"
+                parent_dir_path="./example",
+                current_path="./example/test3"
             )
 
         ],
@@ -73,7 +76,8 @@ def test_file_info(test_files):
                 folder=True,
                 sub_dirs=[],
                 children=[],
-                parent_dir_name="test2"
+                parent_dir_path="./example/test2",
+                current_path="./example/test2/test4"
             ),
             dict(
                 title="test5",
@@ -81,7 +85,8 @@ def test_file_info(test_files):
                 folder=True,
                 sub_dirs=[],
                 children=[],
-                parent_dir_name="test3"
+                parent_dir_path="./example/test3",
+                current_path="./example/test2/test5"
             )
 
         ]
