@@ -64,7 +64,7 @@ def merge_directory_path(path_dict: Dict[int, Any]) -> Dict[str, Any]:
         path_dict (dict): The path_dict has the directory information for level 1 or less in the flat state.
 
     Returns:
-        list: The merged directory path.
+        dict: The merged directory path.
     """
     _value = None
     for key, value in sorted(path_dict.items(), reverse=True):
